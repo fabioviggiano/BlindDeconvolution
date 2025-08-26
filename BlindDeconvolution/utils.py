@@ -86,7 +86,7 @@ def showResults(original, kernel, deblurred):
     plt.tight_layout()
     plt.show()
 
-def createSyntheticBlur(image, kernel_size=25, motion_angle=45, motion_len=20):
+def createSyntheticBlur(image, kernel_size=35, motion_angle=45, motion_len=50):
     """
     Crea un'immagine sfocata artificialmente a partire da una nitida.
     Restituisce l'immagine sfocata e il kernel ground truth.
