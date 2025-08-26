@@ -1,2 +1,2 @@
-from .shan import deblurShan
-from .fergus import deblurFergus 
+from .shan import deblurShanPyramidal  
+from .fergus import deblurFergus

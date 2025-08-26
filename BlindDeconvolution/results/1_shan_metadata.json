@@ -1,0 +1,18 @@
+{
+    "method": "shan",
+    "parameters": {
+        "method": "shan",
+        "image": "data\\test\\C081\\1.png",
+        "kernel_size": 21,
+        "iterations": 20,
+        "synthetic": false,
+        "noise": 0.01,
+        "lambda_prior": 0.002,
+        "pyramid_levels": 3,
+        "edgetaper": false,
+        "no_show": false
+    },
+    "input_sharpness": 0.0031031747348606586,
+    "output_sharpness": 0.018034354168372454,
+    "execution_time_sec": 3.381584882736206
+}

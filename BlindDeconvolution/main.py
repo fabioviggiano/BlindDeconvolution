@@ -4,14 +4,41 @@ import sys
 import cv2
 import numpy as np
 import utils
+import logging
+import json
+import time
 
-from deconvolution import deblurShan, deblurFergus
+from deconvolution import deblurShanPyramidal, deblurFergus
+
+def setup_logging(base_filename):
+    log_dir = "results"
+    if not os.path.exists(log_dir):
+        os.makedirs(log_dir)
+    log_file = os.path.join(log_dir, f"{base_filename}.log")
+
+    logger = logging.getLogger(base_filename)
+    logger.setLevel(logging.INFO)
+
+    # Console handler
+    ch = logging.StreamHandler()
+    ch.setLevel(logging.INFO)
+    ch_formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+    ch.setFormatter(ch_formatter)
+
+    # File handler
+    fh = logging.FileHandler(log_file, mode='w')
+    fh.setLevel(logging.INFO)
+    fh.setFormatter(ch_formatter)
+
+    logger.addHandler(ch)
+    logger.addHandler(fh)
+
+    return logger
 
 def saveResults(deblurred_image, estimated_kernel, base_filename, method):
     if not os.path.exists('results'):
         os.makedirs('results')
     
-    # Normalizza il kernel per una migliore visualizzazione prima di salvare
     kernel_norm = estimated_kernel / estimated_kernel.max() if estimated_kernel.max() > 0 else estimated_kernel
     
     output_path = f"results/{base_filename}_{method}_deblurred.png"
@@ -22,7 +49,29 @@ def saveResults(deblurred_image, estimated_kernel, base_filename, method):
     
     cv2.imwrite(output_path, deblurred_to_save)
     cv2.imwrite(kernel_path, kernel_to_save)
-    print(f"Risultati salvati in '{output_path}' e '{kernel_path}'")
+
+    return output_path, kernel_path
+
+def saveMetadata(base_filename, method, args, input_sharpness, output_sharpness, exec_time, metrics=None):
+    # Converte argparse.Namespace in un dict con tipi serializzabili
+    params = {k: (str(v) if not isinstance(v, (int, float, str, bool, type(None))) else v)
+              for k, v in vars(args).items()}
+
+    metadata = {
+        "method": method,
+        "parameters": params,
+        "input_sharpness": float(input_sharpness),
+        "output_sharpness": float(output_sharpness),
+        "execution_time_sec": float(exec_time),
+    }
+    if metrics:
+        metadata["metrics"] = metrics
+
+    json_path = f"results/{base_filename}_{method}_metadata.json"
+    with open(json_path, "w") as f:
+        json.dump(metadata, f, indent=4)
+
+    return json_path
 
 def main():
     parser = argparse.ArgumentParser(description="Esegue la Blind Deconvolution su un'immagine.")
@@ -41,66 +90,88 @@ def main():
                         help="Livello di rumore stimato (usato da Fergus).")
     parser.add_argument('--lambda_prior', type=float, default=0.002,
                         help="Peso del prior sul gradiente per l'algoritmo di Shan.")
+    parser.add_argument('--pyramid_levels', type=int, default=3,
+                        help="Numero di livelli della piramide (usato da Shan).")
+    parser.add_argument('--edgetaper', action='store_true',
+                        help="Applica edgetapering all'immagine prima della deconvoluzione.")
+    parser.add_argument('--no_show', action='store_true',
+                        help="Se presente, non mostra i risultati a video.")
     
     args = parser.parse_args()
 
+    base_filename = os.path.splitext(os.path.basename(args.image))[0]
+    logger = setup_logging(base_filename)
+
     if args.kernel_size <= 0 or args.kernel_size % 2 == 0:
-        print("Errore: kernel_size deve essere un numero dispari e positivo.")
+        logger.error("kernel_size deve essere un numero dispari e positivo.")
         sys.exit(1)
 
-    print(f"Caricamento immagine da: {args.image}")
+    logger.info(f"Caricamento immagine da: {args.image}")
     
-    sharp_image = utils.loadImage(args.image, grayscale=True, normalize=True)
-    if sharp_image is None:
-        print(f"Errore: Impossibile caricare l'immagine da {args.image}. Controlla il percorso.")
+    input_img = utils.loadImage(args.image, grayscale=True, normalize=True)
+    if input_img is None:
+        logger.error(f"Impossibile caricare l'immagine da {args.image}. Controlla il percorso.")
         sys.exit(1)
 
     if args.synthetic:
-        print("--- ESECUZIONE IN MODALITA' SINTETICA ---")
-        blurred_image, gt_kernel = utils.createSyntheticBlur(sharp_image)
-        ground_truth_image = sharp_image
+        logger.info("--- Esecuzione in modalità sintetica ---")
+        blurred_image, gt_kernel = utils.createSyntheticBlur(input_img)
+        ground_truth_image = input_img
     else:
-        blurred_image = sharp_image
+        blurred_image = input_img
         ground_truth_image = None
 
     input_sharpness = utils.calculateSharpness(blurred_image)
-    print(f"Nitidezza Immagine Input: {input_sharpness:.2f}")
+    logger.info(f"Nitidezza Immagine Input: {input_sharpness:.2f}")
 
     try:
+        start_time = time.time()
+
         if args.method == 'shan':
-            print("Esecuzione con l'algoritmo di Shan...")
-            deblurred_image, estimated_kernel = deblurShan(
+            logger.info("Esecuzione con l'algoritmo di Shan...")
+            deblurred_image, estimated_kernel = deblurShanPyramidal(
                 blurred_image,
                 args.kernel_size,
                 num_iterations=args.iterations,
-                lambda_prior=args.lambda_prior
+                lambda_prior=args.lambda_prior,
+                num_levels=args.pyramid_levels   
             )
         elif args.method == 'fergus':
-            print("Esecuzione con l'algoritmo di Fergus...")
+            logger.info("Esecuzione con l'algoritmo di Fergus...")
             deblurred_image, estimated_kernel = deblurFergus(
                 blurred_image,
                 args.kernel_size,
                 num_iterations=args.iterations,
-                noise_level=args.noise # Iperparametro di Fergus
+                noise_level=args.noise
             )
         else:
-            print(f"Metodo '{args.method}' non riconosciuto.")
+            logger.error(f"Metodo '{args.method}' non riconosciuto.")
             sys.exit(1)
-            
+
+        exec_time = time.time() - start_time
+
     except Exception as e:
-        print(f"Errore durante l'esecuzione dell'algoritmo: {e}")
+        logger.exception(f"Errore durante l'esecuzione dell'algoritmo: {e}")
         sys.exit(1)
 
-    # Valutazione e Risultati
     output_sharpness = utils.calculateSharpness(deblurred_image)
-    print(f"Nitidezza Immagine Output: {output_sharpness:.2f}")
+    logger.info(f"Nitidezza Immagine Output: {output_sharpness:.2f}")
+    logger.info(f"Tempo di esecuzione: {exec_time:.2f} secondi")
 
+    metrics = None
     if args.synthetic and ground_truth_image is not None:
-        utils.calculateMetrics(ground_truth_image, deblurred_image)
+        metrics = utils.calculateMetrics(ground_truth_image, deblurred_image)
+        if metrics:
+            logger.info(f"Metriche sintetiche: {metrics}")
 
-    utils.showResults(blurred_image, estimated_kernel, deblurred_image)
-    base_filename = os.path.splitext(os.path.basename(args.image))[0]
-    saveResults(deblurred_image, estimated_kernel, base_filename, args.method)
+    if not args.no_show:
+        utils.showResults(blurred_image, estimated_kernel, deblurred_image)
+
+    output_path, kernel_path = saveResults(deblurred_image, estimated_kernel, base_filename, args.method)
+    logger.info(f"Risultati salvati: immagine {output_path}, kernel {kernel_path}")
+
+    metadata_path = saveMetadata(base_filename, args.method, args, input_sharpness, output_sharpness, exec_time, metrics)
+    logger.info(f"Metadati salvati in {metadata_path}")
 
 if __name__ == "__main__":
     main()
