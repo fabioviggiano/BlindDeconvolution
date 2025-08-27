@@ -6,17 +6,6 @@ import matplotlib.pyplot as plt
 from skimage.metrics import peak_signal_noise_ratio, structural_similarity
 
 def loadImage(path, grayscale=True, normalize=True):
-    """
-    Carica un'immagine dal percorso specificato.
-    
-    Args:
-        path (str): Percorso del file immagine.
-        grayscale (bool): Se True, converte l'immagine in scala di grigi.
-        normalize (bool): Se True, normalizza i valori dei pixel nell'intervallo [0, 1].
-        
-    Returns:
-        np.ndarray: L'immagine caricata come array NumPy.
-    """
     try:
         img = cv2.imread(path)
         if img is None:

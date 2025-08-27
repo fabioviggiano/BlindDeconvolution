@@ -3,24 +3,24 @@
     "parameters": {
         "image": "data/test/C081/15.png",
         "method": "shan",
-        "kernel_size": 25,
+        "kernel_size": 31,
         "iterations": 20,
-        "lambda_prior": 0.005,
+        "lambda_prior": 0.015,
         "lambda_kernel": 0.001,
         "pyramid_levels": 3,
         "noise": 0.01,
         "synthetic": true,
         "blur_type": "motion",
-        "motion_len": 20,
+        "motion_len": 40,
         "motion_angle": 45.0,
         "gaussian_sigma": 4.0,
         "no_show": true
     },
-    "input_sharpness": 0.00018204071966465563,
-    "output_sharpness": 0.003319334104394653,
-    "execution_time_sec": 3.6798577308654785,
+    "input_sharpness": 0.0001454972370993346,
+    "output_sharpness": 0.0006588867065117571,
+    "execution_time_sec": 3.9648399353027344,
     "metrics": {
-        "psnr": 18.779408323623233,
-        "ssim": 0.36655615724546686
+        "psnr": 23.613047009225582,
+        "ssim": 0.6250249297159891
     }
 }
