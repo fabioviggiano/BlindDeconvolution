@@ -35,8 +35,7 @@ def setup_logging(output_dir, base_filename):
 
     return logger
 
-def saveResults(output_dir, base_filename, method, deblurred_image, estimated_kernel):
-    """Salva le immagini di output nella cartella specifica dell'esecuzione."""
+def saveResults(output_dir, base_filename, method, deblurred_image, estimated_kernel, blurred_image=None):
     kernel_norm = estimated_kernel / estimated_kernel.max() if estimated_kernel.max() > 0 else estimated_kernel
     
     output_path = os.path.join(output_dir, f"{base_filename}_{method}_deblurred.png")
@@ -47,6 +46,11 @@ def saveResults(output_dir, base_filename, method, deblurred_image, estimated_ke
     
     cv2.imwrite(output_path, deblurred_to_save)
     cv2.imwrite(kernel_path, kernel_to_save)
+
+    if blurred_image is not None:
+        blurred_path = os.path.join(output_dir, f"{base_filename}_{method}_blurred_input.png")
+        blurred_to_save = (np.clip(blurred_image, 0, 1) * 255).astype(np.uint8)
+        cv2.imwrite(blurred_path, blurred_to_save)
 
     return output_path, kernel_path
 
@@ -166,7 +170,7 @@ def main():
     if not args.no_show:
         utils.showResults(blurred_image, estimated_kernel, deblurred_image)
 
-    output_path, kernel_path = saveResults(unique_output_dir, base_filename, args.method, deblurred_image, estimated_kernel)
+    output_path, kernel_path = saveResults(unique_output_dir, base_filename, args.method, deblurred_image, estimated_kernel, blurred_image)
     logger.info(f"Risultati salvati in '{unique_output_dir}'")
 
     metadata_path = saveMetadata(unique_output_dir, base_filename, args.method, args, input_sharpness, output_sharpness, exec_time, metrics)
