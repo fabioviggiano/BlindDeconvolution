@@ -1,0 +1,29 @@
+# ===================================================================
+# Dipendenze per il Progetto di Computational Imaging
+# Per installare, eseguire: pip install -r requirements.txt
+# ===================================================================
+
+# --- Core Libraries ---
+# Libreria fondamentale per il calcolo numerico in Python.
+numpy>=1.21.0
+
+# --- Image Processing & Metrics ---
+# Libreria per l'elaborazione di immagini e computer vision.
+opencv-python>=4.5.0
+
+# Utilizzata per calcolare le metriche di valutazione come PSNR e SSIM.
+scikit-image>=0.19.0
+
+# Utilizzata per la visualizzazione dei risultati (grafici e immagini).
+matplotlib>=3.5.0
+
+# --- Deep Learning Framework (per la Fase 2 con Reti Neurali) ---
+# Scegliere UNO dei due framework e decommentare le righe corrispondenti.
+# PyTorch è una scelta molto comune e consigliata per progetti di ricerca.
+
+# Opzione 1: PyTorch
+torch>=2.0.0
+torchvision>=0.15.0
+
+# Opzione 2: TensorFlow
+# tensorflow>=2.10.0
