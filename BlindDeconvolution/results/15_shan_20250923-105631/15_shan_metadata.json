@@ -1,0 +1,26 @@
+{
+    "method": "shan",
+    "parameters": {
+        "image": "data/test/C081/15.png",
+        "method": "shan",
+        "kernel_size": 35,
+        "iterations": 20,
+        "lambda_prior": 0.015,
+        "lambda_kernel": 0.001,
+        "pyramid_levels": 3,
+        "noise": 0.01,
+        "synthetic": true,
+        "blur_type": "gaussian",
+        "motion_len": 50,
+        "motion_angle": 45.0,
+        "gaussian_sigma": 2.0,
+        "no_show": false
+    },
+    "input_sharpness": 4.442439239937812e-05,
+    "output_sharpness": 0.002252075920994566,
+    "execution_time_sec": 4.603801727294922,
+    "metrics": {
+        "psnr": 10.312685935997782,
+        "ssim": 0.06232953379865804
+    }
+}
