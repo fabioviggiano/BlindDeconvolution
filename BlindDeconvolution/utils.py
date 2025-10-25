@@ -1,6 +1,4 @@
-﻿# utils.py (Versione 2.0 - Aggiornata con blur gaussiano)
-
-import numpy as np
+﻿import numpy as np
 import cv2
 import matplotlib.pyplot as plt
 from skimage.metrics import peak_signal_noise_ratio, structural_similarity
@@ -71,7 +69,7 @@ def showResults(original, kernel, deblurred):
     plt.tight_layout()
     plt.show()
 
-# --- NUOVA FUNZIONE PER CREARE UN KERNEL GAUSSIANO ---
+# Funzione per creare il kernel gaussiano
 def createGaussianKernel(kernel_size=35, sigma=5):
     """
     Crea un kernel di blur Gaussiano 2D.
@@ -95,7 +93,7 @@ def createGaussianKernel(kernel_size=35, sigma=5):
     
     return kernel
 
-# --- FUNZIONE createSyntheticBlur AGGIORNATA PER GESTIRE PIÙ TIPI DI BLUR ---
+# --- Creazione di più tipi di blur ---
 def createSyntheticBlur(image, kernel_size=35, blur_type='motion', motion_angle=45, motion_len=50, gaussian_sigma=5):
     """
     Crea un'immagine sfocata artificialmente a partire da una nitida.
@@ -157,16 +155,26 @@ def calculateMetrics(ground_truth, reconstructed):
     gt = ground_truth.astype(reconstructed.dtype)
 
     psnr = peak_signal_noise_ratio(gt, reconstructed, data_range=1.0)
-    ssim = structural_similarity(gt, reconstructed, data_range=1.0, channel_axis=None) # channel_axis=None per grayscale
+    
+    # --- Gestione SSIM ---
+    # Controlla se le immagini sono a colori (multicanale)
+    if gt.ndim == 3:
+        # Per immagini a colori, specifica l'asse dei canali.
+        # OpenCV usa (H, W, C), quindi l'asse dei canali è 2.
+        ssim = structural_similarity(gt, reconstructed, data_range=1.0, channel_axis=2, win_size=7)
+    else:
+        # Per immagini in scala di grigi, non specificare channel_axis
+        ssim = structural_similarity(gt, reconstructed, data_range=1.0, win_size=7)
     
     metrics = {
         'psnr': float(psnr),
         'ssim': float(ssim)
     }
-    
-    print(f"Metriche di Valutazione (vs Ground Truth):")
-    print(f"  - PSNR: {metrics['psnr']:.2f} dB")
-    print(f"  - SSIM: {metrics['ssim']:.4f}")
+ 
+    # print(f"Metriche di Valutazione (vs Ground Truth):")
+    # print(f"  - PSNR: {metrics['psnr']:.2f} dB")
+    # print(f"  - SSIM: {metrics['ssim']:.4f}")
+    return metrics
     return metrics
 
 def calculateSharpness(image):

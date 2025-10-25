@@ -25,6 +25,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="deconvolution\fergus.py" />
+    <Compile Include="create_dataset.py" />
+    <Compile Include="deconvolution\neural_nertwork\dataset.py" />
+    <Compile Include="deconvolution\neural_nertwork\model.py" />
+    <Compile Include="deconvolution\neural_nertwork\predict.py" />
+    <Compile Include="deconvolution\neural_nertwork\train.py" />
     <Compile Include="deconvolution\shan.py" />
     <Compile Include="deconvolution\__init__.py" />
     <Compile Include="main.py" />
@@ -33,11 +38,13 @@
   <ItemGroup>
     <Folder Include="deconvolution\" />
     <Folder Include="deconvolution\data\" />
+    <Folder Include="deconvolution\neural_nertwork\" />
     <Folder Include="deconvolution\results\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="deconvolution\Readme.txt" />
+    <Content Include="deconvolution\README.md" />
     <Content Include="deconvolution\analyze_results.py" />
+    <Content Include="deconvolution\requirements.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
