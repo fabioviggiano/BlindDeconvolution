@@ -36,4 +36,4 @@ Di seguito sono riportati tre casi studio rappresentativi delle performance del 
 ### 3. Caso Difficile (File: 222_v0.png)
 *   **Metriche:** PSNR: 22.53 dB, SSIM: 0.7258
 *   **Analisi:** In presenza di un blur complesso, il modello riesce a recuperare la struttura principale dell'immagine, sebbene con alcuni artefatti visibili. Questo evidenzia i limiti del metodo pur mostrando un miglioramento significativo rispetto all'input.
-![Caso Difficile](03_Caso_Difficile.png)
+![Caso Difficile]([03_Caso_Difficile.png](https://github.com/fabioviggiano/BlindDeconvolution/blob/master/BlindDeconvolution/Report%20Finale/03_Worstacase.jpg))
