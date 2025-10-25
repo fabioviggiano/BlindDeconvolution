@@ -30,10 +30,10 @@ Di seguito sono riportati tre casi studio rappresentativi delle performance del 
 ### 2. Caso Medio (File: 103_v0.png)
 *   **Metriche:** PSNR: 34.40 dB, SSIM: 0.9177
 *   **Analisi:** Un risultato rappresentativo delle performance medie. Il blur è stato rimosso con successo, ripristinando la maggior parte dei dettagli strutturali.
-![Caso Medio]([02_Caso_Medio.png](https://github.com/fabioviggiano/BlindDeconvolution/blob/master/BlindDeconvolution/Report%20Finale/02_AverageCase.jpg))
+![Caso Medio]([https://github.com/fabioviggiano/BlindDeconvolution/blob/master/BlindDeconvolution/Report%20Finale/02_AverageCase.jpg))
 
 ---
 ### 3. Caso Difficile (File: 222_v0.png)
 *   **Metriche:** PSNR: 22.53 dB, SSIM: 0.7258
 *   **Analisi:** In presenza di un blur complesso, il modello riesce a recuperare la struttura principale dell'immagine, sebbene con alcuni artefatti visibili. Questo evidenzia i limiti del metodo pur mostrando un miglioramento significativo rispetto all'input.
-![Caso Difficile]([03_Caso_Difficile.png](https://github.com/fabioviggiano/BlindDeconvolution/blob/master/BlindDeconvolution/Report%20Finale/03_Worstacase.jpg))
+![Caso Difficile](https://github.com/fabioviggiano/BlindDeconvolution/blob/master/BlindDeconvolution/Report%20Finale/03_Worstacase.jpg))
