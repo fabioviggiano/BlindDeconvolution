@@ -30,7 +30,7 @@ Di seguito sono riportati tre casi studio rappresentativi delle performance del 
 ### 2. Caso Medio (File: 103_v0.png)
 *   **Metriche:** PSNR: 34.40 dB, SSIM: 0.9177
 *   **Analisi:** Un risultato rappresentativo delle performance medie. Il blur è stato rimosso con successo, ripristinando la maggior parte dei dettagli strutturali.
-![Caso Medio](02_Caso_Medio.png)
+![Caso Medio]([02_Caso_Medio.png](https://github.com/fabioviggiano/BlindDeconvolution/blob/master/BlindDeconvolution/Report%20Finale/02_AverageCase.jpg))
 
 ---
 ### 3. Caso Difficile (File: 222_v0.png)
