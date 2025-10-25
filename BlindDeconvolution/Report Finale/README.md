@@ -24,7 +24,7 @@ Di seguito sono riportati tre casi studio rappresentativi delle performance del 
 ### 1. Caso Eccellente (File: 27_v2.png)
 *   **Metriche:** PSNR: 40.34 dB, SSIM: 0.9645
 *   **Analisi:** La ricostruzione è quasi indistinguibile dall'originale, dimostrando il massimo potenziale del modello.
-![Caso Eccellente](01_Caso_Eccellente.png)
+![Caso Eccellente](https://github.com/fabioviggiano/BlindDeconvolution/blob/master/BlindDeconvolution/Report%20Finale/01_BestCase.jpg)
 
 ---
 ### 2. Caso Medio (File: 103_v0.png)
