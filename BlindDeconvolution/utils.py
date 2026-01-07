@@ -25,7 +25,9 @@ def loadImage(path, grayscale=True, normalize=True):
 
 def psf2otf(psf, output_shape):
     """
-    Converte una Point Spread Function (PSF, il nostro kernel) in una Optical Transfer Function (OTF) della dimensione richiesta per la convoluzione nel dominio della frequenza.
+   Questa è una funzione più tecnica, cruciale per l'efficienza dell'algoritmo di Shan. 
+   Invece di eseguire la convoluzione nel dominio spaziale (che è lenta), l'algoritmo lavora nel dominio della frequenza. 
+   Questa funzione converte il kernel (Point Spread Function, PSF) nella sua rappresentazione in frequenza (Optical Transfer Function, OTF), preparandolo per le operazioni di moltiplicazione che sostituiscono la convoluzione.
     
     Args:
         psf (np.ndarray): Il kernel di blur.
@@ -73,7 +75,8 @@ def showResults(original, kernel, deblurred):
     plt.tight_layout()
     plt.show()
 
-# Funzione per creare il kernel gaussiano
+# Genera un kernel di sfocatura di tipo gaussiano
+
 def createGaussianKernel(kernel_size=35, sigma=5):
     """
     Crea un kernel di blur Gaussiano 2D.
@@ -102,6 +105,9 @@ def createSyntheticBlur(image, kernel_size=35, blur_type='motion', motion_angle=
     """
     Crea un'immagine sfocata artificialmente a partire da una nitida.
     Restituisce l'immagine sfocata e il kernel ground truth.
+
+Se il tipo è 'motion', disegna una linea nel kernel per simulare il movimento.
+Se il tipo è 'gaussian', utilizza createGaussianKernel per creare il blur.
     
     Args:
         image (np.ndarray): L'immagine di input nitida.
