@@ -20,10 +20,12 @@ def loadImage(path, grayscale=True, normalize=True):
         print(f"Errore durante il caricamento dell'immagine: {e}")
         return None
 
+
+# Converte il kernel (Point Spread Function, PSF) nella sua rappresentazione in frequenza (Optical Transfer Function, OTF) 
+
 def psf2otf(psf, output_shape):
     """
-    Converte una Point Spread Function (PSF, il nostro kernel) in una Optical Transfer Function (OTF)
-    della dimensione richiesta per la convoluzione nel dominio della frequenza.
+    Converte una Point Spread Function (PSF, il nostro kernel) in una Optical Transfer Function (OTF) della dimensione richiesta per la convoluzione nel dominio della frequenza.
     
     Args:
         psf (np.ndarray): Il kernel di blur.
@@ -48,6 +50,8 @@ def psf2otf(psf, output_shape):
     # Calcola la Fast Fourier Transform 2D
     return np.fft.fft2(padded_psf)
 
+
+# Visualizza a schermo, una accanto all'altra, l'immagine di input, il kernel stimato e l'immagine ricostruita
 def showResults(original, kernel, deblurred):
     """Visualizza l'immagine sfocata, il kernel stimato e l'immagine deblurred."""
     fig, axes = plt.subplots(1, 3, figsize=(15, 5))
