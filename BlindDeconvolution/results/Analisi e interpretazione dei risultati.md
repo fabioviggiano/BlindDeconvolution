@@ -4,7 +4,7 @@ La tabella "SHAN - Risultato dei test.csv" permette di trarre conclusioni chiare
 
 ## 1. Conferma totale del feedback del professore
 
-Il confronto tra **T01** (PSNR: 12.92) e **T02** (PSNR: 23.32) dimostra in modo quantitativo l’impatto del suggerimento del professore.  
+Il confronto tra **T01** (PSNR: 12.92) e **T02** (PSNR: 23.32) dimostra in modo quantitativo l’impatto del suggerimento del professore ossia l' utilizzo di una sfocatura, blur Gaussiana troppo forte.  
 Il passaggio da un blur *“esagerato”* a uno *“realistico”* ha:
 
 - quasi **raddoppiato il PSNR**
