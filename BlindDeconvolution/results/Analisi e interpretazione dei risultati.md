@@ -2,7 +2,7 @@
 
 La tabella "SHAN - Risultato dei test.csv" permette di trarre conclusioni chiare e **basate sui dati**, in linea con quanto richiesto in un progetto di ricerca sperimentale.
 
-## 1. Conferma totale del feedback del professore
+## 1. Primo feedback
 
 Il confronto tra **T01** (PSNR: 12.92) e **T02** (PSNR: 23.32) dimostra in modo quantitativo l’impatto del suggerimento del professore ossia l' utilizzo di una sfocatura, blur Gaussiana troppo forte.  
 Il passaggio da un blur *“esagerato”* a uno *“realistico”* ha:
