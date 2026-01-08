@@ -2,6 +2,7 @@
 Blind Deconvolution: 
 
 Confronto tra Approcci Model-Based e Data-Driven
+
 Descrizione del Progetto
 
 Questo repository ospita un'analisi comparativa tra due paradigmi fondamentali per la risoluzione del problema della Blind Deconvolution: il recupero di un'immagine nitida (latent image) a partire da una versione sfocata (blurred image) quando il kernel di sfocatura è sconosciuto.
@@ -29,27 +30,11 @@ Risultati Chiave
 
 La valutazione è stata condotta utilizzando le metriche quantitative PSNR (Peak Signal-to-Noise Ratio) e SSIM (Structural Similarity Index).
 
-Metodo
-
-Scenario (Intensità Blur)
-PSNR Medio (dB)
-SSIM Medio
-Note
-Shan et al.
-Realistico
-23.32
-0.6800
-Buona ricostruzione su blur lievi, sensibile agli iperparametri.
-Shan et al.
-Forte
-12.92
-0.6000
-Crollo delle performance con artefatti evidenti su blur intensi.
-U-Net
-Vario (Test Set)
-34.18
-0.9056
-Eccellente robustezza e generalizzazione anche in casi critici.
+| Metodo | Scenario (Intensità Blur) | PSNR Medio (dB) | SSIM Medio | Note |
+| :--- | :--- | :--- | :--- | :--- |
+| **Shan et al.** | Realistico | 23.32 | 0.6800 | Buona ricostruzione su blur lievi, sensibile agli iperparametri. |
+| **Shan et al.** | Forte | 12.92 | 0.6000 | Crollo delle performance con artefatti evidenti su blur intensi. |
+| **U-Net** | Vario (Test Set) | **34.18** | **0.9056** | Eccellente robustezza e generalizzazione anche in casi critici. |
 
 Conclusioni: 
 
