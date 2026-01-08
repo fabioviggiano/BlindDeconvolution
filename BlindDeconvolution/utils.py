@@ -3,6 +3,8 @@ import cv2
 import matplotlib.pyplot as plt
 from skimage.metrics import peak_signal_noise_ratio, structural_similarity
 
+#------ Visualizzazione e caricamento immagini
+
 def loadImage(path, grayscale=True, normalize=True):
     try:
         img = cv2.imread(path)
@@ -20,14 +22,33 @@ def loadImage(path, grayscale=True, normalize=True):
         print(f"Errore durante il caricamento dell'immagine: {e}")
         return None
 
+# Visualizza a schermo, una accanto all'altra, l'immagine di input, il kernel stimato e l'immagine ricostruita
+def showResults(original, kernel, deblurred):
+    """Visualizza l'immagine sfocata, il kernel stimato e l'immagine deblurred."""
+    fig, axes = plt.subplots(1, 3, figsize=(15, 5))
+    
+    axes[0].imshow(original, cmap='gray')
+    axes[0].set_title("Immagine Sfocata (Input)")
+    axes[0].axis('off')
+    
+    # Normalizza il kernel per una visualizzazione ottimale
+    kernel_display = kernel / kernel.max() if kernel.max() > 0 else kernel
+    axes[1].imshow(kernel_display, cmap='gray')
+    axes[1].set_title("Kernel Stimato")
+    axes[1].axis('off')
+    
+    axes[2].imshow(np.clip(deblurred, 0, 1), cmap='gray')
+    axes[2].set_title("Immagine Ricostruita (Output)")
+    axes[2].axis('off')
+    
+    plt.tight_layout()
+    plt.show()
 
 # Converte il kernel (Point Spread Function, PSF) nella sua rappresentazione in frequenza (Optical Transfer Function, OTF) 
 
 def psf2otf(psf, output_shape):
-    """
-   Questa è una funzione più tecnica, cruciale per l'efficienza dell'algoritmo di Shan. 
-   Invece di eseguire la convoluzione nel dominio spaziale (che è lenta), l'algoritmo lavora nel dominio della frequenza. 
-   Questa funzione converte il kernel (Point Spread Function, PSF) nella sua rappresentazione in frequenza (Optical Transfer Function, OTF), preparandolo per le operazioni di moltiplicazione che sostituiscono la convoluzione.
+        """ 
+   Invece di eseguire la convoluzione nel dominio spaziale (che è lenta), l'algoritmo lavora nel dominio della frequenza, preparandolo per le operazioni di moltiplicazione che sostituiscono la convoluzione.
     
     Args:
         psf (np.ndarray): Il kernel di blur.
@@ -51,29 +72,6 @@ def psf2otf(psf, output_shape):
     
     # Calcola la Fast Fourier Transform 2D
     return np.fft.fft2(padded_psf)
-
-
-# Visualizza a schermo, una accanto all'altra, l'immagine di input, il kernel stimato e l'immagine ricostruita
-def showResults(original, kernel, deblurred):
-    """Visualizza l'immagine sfocata, il kernel stimato e l'immagine deblurred."""
-    fig, axes = plt.subplots(1, 3, figsize=(15, 5))
-    
-    axes[0].imshow(original, cmap='gray')
-    axes[0].set_title("Immagine Sfocata (Input)")
-    axes[0].axis('off')
-    
-    # Normalizza il kernel per una visualizzazione ottimale
-    kernel_display = kernel / kernel.max() if kernel.max() > 0 else kernel
-    axes[1].imshow(kernel_display, cmap='gray')
-    axes[1].set_title("Kernel Stimato")
-    axes[1].axis('off')
-    
-    axes[2].imshow(np.clip(deblurred, 0, 1), cmap='gray')
-    axes[2].set_title("Immagine Ricostruita (Output)")
-    axes[2].axis('off')
-    
-    plt.tight_layout()
-    plt.show()
 
 # Genera un kernel di sfocatura di tipo gaussiano
 
@@ -161,13 +159,13 @@ def calculateMetrics(ground_truth, reconstructed):
     Returns:
         dict: Un dizionario contenente i valori di 'psnr' e 'ssim'.
     """
-    # Assicurati che le immagini abbiano lo stesso tipo di dati per le metriche
+    # Verifica che le immagini abbiano lo stesso tipo di dati per le metriche
     gt = ground_truth.astype(reconstructed.dtype)
 
     psnr = peak_signal_noise_ratio(gt, reconstructed, data_range=1.0)
     
-    # --- Gestione SSIM ---
-    # Controlla se le immagini sono a colori (multicanale)
+    # --- Gestione SSIM --- # Controlla se le immagini sono a colori (multicanale)
+    
     if gt.ndim == 3:
         # Per immagini a colori, specifica l'asse dei canali.
         # OpenCV usa (H, W, C), quindi l'asse dei canali è 2.
@@ -181,9 +179,9 @@ def calculateMetrics(ground_truth, reconstructed):
         'ssim': float(ssim)
     }
  
-    # print(f"Metriche di Valutazione (vs Ground Truth):")
-    # print(f"  - PSNR: {metrics['psnr']:.2f} dB")
-    # print(f"  - SSIM: {metrics['ssim']:.4f}")
+    print(f"Metriche di Valutazione (vs Ground Truth):")
+    print(f"  - PSNR: {metrics['psnr']:.2f} dB")
+    print(f"  - SSIM: {metrics['ssim']:.4f}")
     return metrics
     return metrics
 
