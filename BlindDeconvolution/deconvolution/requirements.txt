@@ -17,13 +17,8 @@ scikit-image>=0.19.0
 # Utilizzata per la visualizzazione dei risultati (grafici e immagini).
 matplotlib>=3.5.0
 
-# --- Deep Learning Framework (per la Fase 2 con Reti Neurali) ---
-# Scegliere UNO dei due framework e decommentare le righe corrispondenti.
-# PyTorch è una scelta molto comune e consigliata per progetti di ricerca.
+# --- Deep Learning Framework ---
 
 # Opzione 1: PyTorch
 torch>=2.0.0
 torchvision>=0.15.0
-
-# Opzione 2: TensorFlow
-# tensorflow>=2.10.0
