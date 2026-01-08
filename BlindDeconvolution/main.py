@@ -10,7 +10,7 @@ import time
 
 from deconvolution import deblurShanPyramidal, deblurFergus
 
-#---- Esecutore metodo di Shan
+#---- Esecutore metodo di Shan che chiama deblurShanPyram in devonvolution/shan.py
 
 def setup_logging(output_dir, base_filename):
     """Configura il logging per salvare un file .log nella cartella specifica dell'esecuzione."""
