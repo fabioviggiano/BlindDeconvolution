@@ -10,6 +10,7 @@ import time
 
 from deconvolution import deblurShanPyramidal, deblurFergus
 
+#---- Esecutore metodo di Shan
 
 def setup_logging(output_dir, base_filename):
     """Configura il logging per salvare un file .log nella cartella specifica dell'esecuzione."""
@@ -81,23 +82,59 @@ def main():
         formatter_class=argparse.ArgumentDefaultsHelpFormatter
     )
     
+# --- GRUPPO: Parametri Principali ---
+    # Organizza gli argomenti più importanti e comuni in un gruppo separato per rendere l'output --help più leggibile.
     g_main = parser.add_argument_group('Parametri Principali')
+    
+    # [Entrambi] Definisce il percorso del file dell'immagine da deblurrare. È il parametro più importante e obbligatorio.
     g_main.add_argument('--image', type=str, required=True, help="Percorso dell'immagine da processare.")
+    
+    # [Entrambi] Permette all'utente di scegliere quale dei due algoritmi di deconvolution (Shan o Fergus) eseguire.
     g_main.add_argument('--method', type=str, default='shan', choices=['shan', 'fergus'], help="Algoritmo da utilizzare.")
+    
+    # [Entrambi] Specifica la dimensione massima (es. 35x35 pixel) del kernel di blur che l'algoritmo deve provare a stimare. Deve essere dispari.
     g_main.add_argument('--kernel_size', type=int, default=35, help="Dimensione del kernel da stimare (deve essere dispari).")
+    
+    # [Entrambi] Controlla per quanti cicli di ottimizzazione l'algoritmo deve girare. Più iterazioni possono migliorare il risultato, ma aumentano il tempo di esecuzione.
     g_main.add_argument('--iterations', type=int, default=20, help="Numero di iterazioni per l'algoritmo.")
+    
+    # --- GRUPPO: Parametri Specifici per Algoritmo ---
+    # Raggruppa i parametri di fine-tuning che sono specifici per un solo algoritmo, per non creare confusione.
     g_alg = parser.add_argument_group('Parametri specifici per Algoritmo')
+    
+    # [Shan] Controlla la "forza" della regolarizzazione sull'immagine latente. Valori più alti riducono gli artefatti (ringing) ma possono ammorbidire i dettagli.
     g_alg.add_argument('--lambda_prior', type=float, default=0.005, help="[Shan] Peso del prior sul gradiente.")
+    
+    # [Shan] Controlla la regolarizzazione applicata durante la stima del kernel, per evitare che la stima diventi troppo rumorosa.
     g_alg.add_argument('--lambda_kernel', type=float, default=0.001, help="[Shan] Peso del prior di regolarizzazione per la stima del kernel.")
+    
+    # [Shan] Imposta il numero di scale (risoluzioni) dell'immagine su cui l'algoritmo lavora. L'approccio piramidale aiuta a stimare kernel di grandi dimensioni in modo più robusto.
     g_alg.add_argument('--pyramid_levels', type=int, default=3, help="[Shan] Numero di livelli della piramide.")
-    g_alg.add_argument('--noise', type=float, default=0.01, help="[Fergus] Livello di rumore stimato.")
+    
+    # --- GRUPPO: Parametri per Test Sintetici ---
+    # Raggruppa tutti i parametri che servono solo quando si vuole testare l'algoritmo su un'immagine nitida a cui viene applicato un blur artificiale.
     g_synth = parser.add_argument_group('Parametri per Test Sintetici (usati solo con --synthetic)')
+    
+    # [Modalità Sintetica] Se presente, attiva la modalità di test. Lo script prenderà l'immagine di input, la sfocherà artificialmente e poi proverà a correggerla.
     g_synth.add_argument('--synthetic', action='store_true', help="Attiva la modalità test sintetico su un'immagine nitida.")
+    
+    # [Modalità Sintetica] Permette di scegliere il tipo di sfocatura da generare artificialmente (movimento rettilineo o sfocatura gaussiana).
     g_synth.add_argument('--blur_type', type=str, default='motion', choices=['motion', 'gaussian'], help="Tipo di blur da generare sinteticamente.")
+    
+    # [Modalità Sintetica] Se blur_type è 'motion', definisce la lunghezza in pixel della scia di movimento.
     g_synth.add_argument('--motion_len', type=int, default=50, help="[Motion Blur] Lunghezza della scia di movimento.")
+    
+    # [Modalità Sintetica] Se blur_type è 'motion', definisce l'angolo (in gradi) della scia di movimento.
     g_synth.add_argument('--motion_angle', type=float, default=45.0, help="[Motion Blur] Angolo della scia di movimento (in gradi).")
+    
+    # [Modalità Sintetica] Se blur_type è 'gaussian', definisce la deviazione standard del kernel gaussiano. Valori più alti producono un blur più esteso.
     g_synth.add_argument('--gaussian_sigma', type=float, default=4.0, help="[Gaussian Blur] Deviazione standard della gaussiana.")
+    
+    # --- GRUPPO: Parametri di Output ---
+    # Raggruppa i parametri che controllano come e dove vengono mostrati o salvati i risultati.
     g_out = parser.add_argument_group('Parametri di Output e Visualizzazione')
+    
+    # Non mostra i risultati a video
     g_out.add_argument('--no_show', action='store_true', help="Se presente, non mostra i risultati a video.")
 
     args = parser.parse_args()
@@ -110,7 +147,6 @@ def main():
     os.makedirs(unique_output_dir, exist_ok=True)
 
     logger = setup_logging(unique_output_dir, base_filename)
-
 
     if args.kernel_size <= 0 or args.kernel_size % 2 == 0:
         logger.error("kernel_size deve essere un numero dispari e positivo.")
