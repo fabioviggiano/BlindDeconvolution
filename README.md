@@ -1,9 +1,9 @@
 --------------------------------------------------------------------------------
-Blind Deconvolution: 
+# Blind Deconvolution: 
 
-Confronto tra Approcci Model-Based e Data-Driven
+## Confronto tra approcci Model-Based e Data-Driven
 
-Descrizione del Progetto
+##  Descrizione del progetto
 
 Questo repository ospita un'analisi comparativa tra due paradigmi fondamentali per la risoluzione del problema della Blind Deconvolution: il recupero di un'immagine nitida (latent image) a partire da una versione sfocata (blurred image) quando il kernel di sfocatura è sconosciuto.
 
@@ -26,7 +26,7 @@ Implementazione di una Convolutional Neural Network (CNN) con architettura U-Net
 • Architettura: Struttura encoder-decoder con skip connections per preservare i dettagli spaziali ad alta frequenza necessari per una ricostruzione di qualità.
 • Dataset: Training effettuato su immagini mediche (dataset Mayo/C081) con applicazione randomica di kernel di sfocatura.
 
-Risultati Chiave
+## Risultati chiave
 
 La valutazione è stata condotta utilizzando le metriche quantitative PSNR (Peak Signal-to-Noise Ratio) e SSIM (Structural Similarity Index).
 
@@ -36,17 +36,11 @@ La valutazione è stata condotta utilizzando le metriche quantitative PSNR (Peak
 | **Shan et al.** | Forte | 12.92 | 0.6000 | Crollo delle performance con artefatti evidenti su blur intensi. |
 | **U-Net** | Vario (Test Set) | **34.18** | **0.9056** | Eccellente robustezza e generalizzazione anche in casi critici. |
 
-## Risultati Quantitativi
+## Risultati quantitativi
 
-La tabella seguente mostra le metriche medie di performance (PSNR e SSIM) calcolate sui rispettivi set di test. Valori più alti indicano una migliore qualità di ricostruzione.
+La tabella nel paragrafo precedente mostra le metriche medie di performance (PSNR e SSIM) calcolate sui rispettivi set di test. Valori più alti indicano una migliore qualità di ricostruzione.
 
-| Metodo                  | Livello di Blur        | PSNR Medio (dB) | SSIM Medio |
-| :---------------------- | :--------------------- | :-------------: | :--------: |
-| Shan (Classico)         | Realistico             |      23.32      |   0.6800   |
-| Shan (Classico)         | Forte                  |      12.92      |   0.0600   |
-| **U-Net (Deep Learning)** | **Vario (981 immagini)** |    **34.18**    | **0.9056** |
-
-I risultati quantitativi dimostrano una netta superiorità del modello U-Net. L'approccio deep learning non solo supera il metodo classico in tutti gli scenari, ma si dimostra particolarmente robusto nel gestire sfocature aggressive, un'area in cui l'algoritmo di Shan mostra i suoi limiti.
+I risultati dimostrano una netta superiorità del modello U-Net. L'approccio deep learning non solo supera il metodo classico in tutti gli scenari, ma si dimostra particolarmente robusto nel gestire sfocature aggressive, un'area in cui l'algoritmo di Shan mostra i suoi limiti.
 
 ## Analisi Visiva dei Risultati della U-Net
 
@@ -70,12 +64,15 @@ Di seguito sono riportati tre casi studio rappresentativi delle performance del 
 *   **Analisi:** In presenza di un blur complesso, il modello riesce a recuperare la struttura principale dell'immagine, sebbene con alcuni artefatti visibili. Questo evidenzia i limiti del metodo pur mostrando un miglioramento significativo rispetto all'input.
 ![Caso Difficile](https://github.com/fabioviggiano/BlindDeconvolution/blob/master/BlindDeconvolution/Report%20Finale/03_Worstacase.jpg))
 
-
-Conclusioni: 
+## Conclusioni: 
 
 Mentre l'approccio classico di Shan fornisce risultati validi in condizioni controllate, dimostra fragilità all'aumentare dell'intensità del blur. La U-Net supera significativamente il metodo classico, dimostrando che l'approccio data-driven è più robusto nel gestire la natura ill-posed della blind deconvolution, evitando i minimi locali tipici dell'approccio MAP.
 
-Struttura del Repository
+## Struttura del Repository
+
+Per un' errata impostazione nella fase di step del progetto, il codice così come le immagini di test sono nella cartella BlindDeconvolution.
+
+BlindDeconvolution/
 
 • src/classical: Implementazione dell'algoritmo di Shan e script di calibrazione.
 • src/deep_learning: Pipeline di training e inferenza per la U-Net (PyTorch).
@@ -83,4 +80,5 @@ Struttura del Repository
 • results: Confronti visivi e log delle metriche.
 
 --------------------------------------------------------------------------------
-Progetto sviluppato nell'ambito del corso di Computational Imaging.
+
+Progetto sviluppato nell'ambito del corso di Computational Imaging per l' esame dello stesso.
