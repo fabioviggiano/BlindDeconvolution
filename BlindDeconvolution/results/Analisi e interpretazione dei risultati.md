@@ -1,5 +1,22 @@
 # Analisi e interpretazione dei risultati
 
+| Test_ID | Date       | Test_Description                                                                 | Blur_Level | Blur_Type | Blur_Strength_Param | Estimated_Kernel_Size | PSNR_dB | SSIM   | Input_Sharpness | Output_Sharpness | Exec_Time_s | Results_Folder_Path                     |
+|--------:|------------|----------------------------------------------------------------------------------|------------|-----------|---------------------|-----------------------|---------|--------|------------------|-------------------|-------------|-----------------------------------------|
+| T02 | 2025-09-08 | Correzione #1: blur gaussiano realistico (parametri suggeriti dal prof, k_size=7) | Leggero | gaussian | sigma=1.0 | 7 | 23.32 | 0.6787 | 0.000341 | 0.000993 | 4.70 | results\15_shan_20250908-104755 |
+| T04 | 2025-10-06 | Test sistematico: motion blur leggero | Leggero | motion | len=10 | 15 | 22.63 | 0.5901 | 0.000369 | 0.001282 | 4.12 | results\15_shan_20251006-120010 |
+| T03 | 2025-09-08 | Variazione su correzione #1: kernel leggermente più grande (k_size=9) | Leggero | gaussian | sigma=1.0 | 9 | 21.67 | 0.6024 | 0.000341 | 0.002678 | 4.42 | results\15_shan_20250908-104809 |
+| T05 | 2025-10-06 | Test sistematico: gaussian blur leggero (replica di T03) | Leggero | gaussian | sigma=1.0 | 9 | 21.67 | 0.6024 | 0.000341 | 0.002678 | 3.29 | results\15_shan_20251006-120111 |
+| T06 | 2025-10-06 | Test sistematico: motion blur moderato | Moderato | motion | len=25 | 31 | 18.21 | 0.3758 | 0.000145 | 0.003613 | 3.87 | results\15_shan_20251006-120249 |
+| T07 | 2025-10-06 | Test sistematico: gaussian blur moderato | Moderato | gaussian | sigma=2.5 | 21 | 12.71 | 0.0555 | 0.000019 | 0.002280 | 3.58 | results\15_shan_20251006-120326 |
+| T08 | 2025-09-23 | Test sistematico: motion blur intenso | Intenso | motion | len=30 | 21 | 22.13 | 0.5610 | 0.000218 | 0.001509 | 5.15 | results\15_shan_20250923-104609 |
+| T09 | 2025-09-23 | Variazione su T08: stesso blur, kernel di stima più grande | Intenso | motion | len=30 | 35 | 19.30 | 0.3906 | 0.000128 | 0.001088 | 3.45 | results\15_shan_20250923-104814 |
+| T10 | 2025-09-23 | Test sistematico: motion blur molto intenso (livello approvato dal prof) | Intenso | motion | len=50 | 35 | 19.30 | 0.3906 | 0.000128 | 0.001088 | 3.99 | results\15_shan_20250923-105018 |
+| T11 | 2025-09-23 | Test sistematico: gaussian blur molto intenso | Intenso | gaussian | sigma=8.0 | 35 | 18.46 | 0.1536 | 0.000000 | 0.000170 | 5.45 | results\15_shan_20250923-105236 |
+| T12 | 2025-09-23 | Variazione su T09: kernel di stima eccessivo (61x61) | Intenso | motion | len=30 | 61 | 17.62 | 0.2214 | 0.000103 | 0.000942 | 4.94 | results\15_shan_20250923-105503 |
+| T01 | 2025-09-08 | Baseline iniziale: blur gaussiano forte (giudicato "troppo esagerato" dal prof) | Intenso | gaussian | sigma=5.0 | 35 | 12.92 | 0.0613 | 0.000001 | 0.000597 | 3.83 | results\15_shan_20250908-104733 |
+| T13 | 2025-09-23 | Test sistematico: gaussian blur intenso (confronto per T07) | Intenso | gaussian | sigma=2.0 | 35 | 10.31 | 0.0623 | 0.000044 | 0.002252 | 4.60 | results\15_shan_20250923-105631 |
+
+
 Questa tabella permette di trarre conclusioni chiare e **basate sui dati**, in linea con quanto richiesto in un progetto di ricerca sperimentale.
 
 ## 1. Conferma totale del feedback del professore
