@@ -54,7 +54,7 @@ def validate_model(loader, model, loss_fn):
 def main():
     print(f"Utilizzando il dispositivo: {DEVICE}")
     
-    # 1. Caricare i Dati
+    # 1. Carica i dati
     IMAGE_SIZE = 256
     transformations = transforms.Compose([
         transforms.ToTensor(),
@@ -72,8 +72,7 @@ def main():
     loss_fn = nn.MSELoss()
     optimizer = optim.Adam(model.parameters(), lr=LEARNING_RATE)
     
-    # --- NUOVA SEZIONE: Caricamento del Checkpoint ---
-    start_epoch = 0
+    # Checkpoint
     best_val_loss = float('inf')
     if os.path.exists(MODEL_SAVE_PATH):
         print("=> Trovato checkpoint, carico lo stato...")
@@ -85,8 +84,7 @@ def main():
         print(f"=> Checkpoint caricato! Riprendo l'addestramento dall'epoca {start_epoch}")
     else:
         print("=> Nessun checkpoint trovato, inizio un nuovo addestramento.")
-    # --- FINE NUOVA SEZIONE ---
-
+        
     # 3. Ciclo di Addestramento e Validazione
     for epoch in range(start_epoch, NUM_EPOCHS): # MODIFICATO: parte da start_epoch
         print(f"\n--- Epoca {epoch+1}/{NUM_EPOCHS} ---")
